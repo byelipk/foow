@@ -27,9 +27,29 @@ to the database is relatively small. However, with a follower-based system like 
 the data can potentially be copied thousands or millions of times, increasing
 the cost of reading the data.
 
-This design, when implemented on a PostgreSQL database is fairly robust. This
-type of push model is best when producers create relatively few activities and a
+When implemented on a PostgreSQL database, the "push" model is fairly robust.
+But it is best when producers create relatively few activities and a
 consumer requests their feed often.
+
+An added beenfit of the polymorphic table is the ability to render different
+partials in the view layer.
+
+*Assume there is a `#recent_activities` method on `Person` which grabs a sorted
+list of activities for that person.*
+
+First, grab the collection in the controller:
+
+    @activities = current_person.recent_activities
+
+Then you can render polymorphic partials like so:
+
+    @activities.each do |activity|
+        render "#{activity.name}_#{activity.direction}_followed"
+    end
 
 You can read more about push vs. pull in this article from Yahoo Research:
 research.yahoo.com/files/sigmod278-silberstein.pdf
+
+Thoughtbot also has a blog post about using polymorphism to create an activity
+feed:
+http://robots.thoughtbot.com/using-polymorphism-to-make-a-better-activity-feed-in-rails
