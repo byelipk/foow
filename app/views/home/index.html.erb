@@ -1,0 +1,7 @@
+<h1>Activity Feed</h1>
+
+<ul>
+  <% @activities.each do |activity| %>
+    <%= render "#{activity.name}_#{activity.direction}_followed", object: activity.subject %>
+  <% end %>
+</ul>
